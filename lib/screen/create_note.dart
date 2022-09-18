@@ -4,8 +4,8 @@ import 'package:note_version_2/bloc/notes_bloc.dart';
 
 import '../models/notes_model.dart';
 
-class CrateNote extends StatelessWidget {
-  CrateNote({Key? key}) : super(key: key);
+class CreateNote extends StatelessWidget {
+  CreateNote({Key? key}) : super(key: key);
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
@@ -53,7 +53,7 @@ class CrateNote extends StatelessWidget {
         InkWell(
           onTap: () {
             context.read<NotesBloc>().add(CreateNoteEvent(
-                  note:Notes(
+                  note: Notes(
                     title: _titleController.text,
                     body: _bodyController.text,
                   ),

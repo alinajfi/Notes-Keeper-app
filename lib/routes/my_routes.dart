@@ -18,7 +18,7 @@ class MyRoutes {
     } else if (settings.name == RouteConst.creteNote) {
       return MaterialPageRoute(
         builder: (context) {
-          return CrateNote();
+          return CreateNote();
         },
       );
     } else if (settings.name == RouteConst.updateNote) {

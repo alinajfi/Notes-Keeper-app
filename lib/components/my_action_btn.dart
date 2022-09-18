@@ -13,25 +13,23 @@ class MyActionButton extends StatelessWidget {
     var height = size.height;
     var width = size.width;
     return InkWell(
-      splashColor: Colors.yellow,
+      splashColor: Colors.grey,
+      //radius: 17,
+      borderRadius: BorderRadius.circular(30),
       onTap: onTap,
-      child: Material(
-        elevation: 5,
-        type: MaterialType.transparency,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            alignment: Alignment.center,
-            clipBehavior: Clip.hardEdge,
-            height: height * 0.05,
-            width: width * 0.07,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: icon,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          alignment: Alignment.center,
+          clipBehavior: Clip.hardEdge,
+          height: height * 0.04,
+          width: width * 0.09,
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
           ),
+          child: icon,
         ),
       ),
     );

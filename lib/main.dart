@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_version_2/bloc/notes_bloc.dart';
 import 'package:note_version_2/routes/my_routes.dart';
-import 'package:note_version_2/screen/home_page.dart';
+import 'package:note_version_2/screen/create_note.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Georgia ',
       ),
       onGenerateRoute: MyRoutes.myRoutes,
-      home: const HomePage(),
+      home: CreateNote(),
     );
   }
 }
