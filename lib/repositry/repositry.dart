@@ -5,12 +5,9 @@ class NotesRepository {
   final NotesDbHelper _notesDbHelper = NotesDbHelper();
 
   Future<List<Notes>> getNotesList() async => await _notesDbHelper.viewData();
-  Future<void> closeDataBase() async => await _notesDbHelper.closeDataBase();
-  Future<bool> deleteAllNotes() async => await _notesDbHelper.deleteAllNotes();
-  Future<bool> createNote(Notes note) async =>
-      await _notesDbHelper.insertIntoDb(note);
-  Future<bool> deletNote(int noteId) async =>
-      await _notesDbHelper.deleteNote(noteId);
-  Future<bool> updateNote(Notes note) async =>
-      await _notesDbHelper.updateNote(note);
+  Future<void> closeDataBase() => _notesDbHelper.closeDataBase();
+  Future<bool> deleteAllNotes() => _notesDbHelper.deleteAllNotes();
+  Future<bool> createNote(Notes note) => _notesDbHelper.insertIntoDb(note);
+  Future<bool> deletNote(int noteId) => _notesDbHelper.deleteNote(noteId);
+  Future<bool> updateNote(Notes note) => _notesDbHelper.updateNote(note);
 }

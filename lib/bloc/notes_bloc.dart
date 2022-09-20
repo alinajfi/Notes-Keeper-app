@@ -9,10 +9,9 @@ part 'notes_state.dart';
 class NotesBloc extends Bloc<NotesEvent, NotesState> {
   NotesRepository repository = NotesRepository();
   NotesBloc() : super(InitialNotesState()) {
-    on<CreateNoteEvent>((event, emit) async {
-      repository.createNote(event.note);
+    on<GetAllNotesEvent>((event, emit) async {
       List<Notes> list = await repository.getNotesList();
-      emit(NotesLoadedState(list));
+      emit(GetAllNotesState(list));
     });
   }
 }

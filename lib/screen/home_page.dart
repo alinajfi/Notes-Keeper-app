@@ -2,7 +2,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_version_2/bloc/notes_bloc.dart';
 import 'package:note_version_2/components/my_action_btn.dart';
 import 'package:note_version_2/utils/routeconst.dart';
 
@@ -29,12 +31,17 @@ class _HomePageState extends State<HomePage> {
   late List<Notes> notesList;
 
   @override
+  void initState() {
+    super.initState();
+    context.read<NotesBloc>().add(GetAllNotesEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
-    myListView = ListOrGridView().homePageListView(height, width);
-    myGridView = ListOrGridView().homePageGridView();
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
@@ -47,7 +54,32 @@ class _HomePageState extends State<HomePage> {
               Expanded(flex: 1, child: secondRow()),
               Expanded(
                 flex: 10,
-                child: gridOrlist ? myListView : myGridView,
+                child: BlocBuilder<NotesBloc, NotesState>(
+                  builder: (context, state) {
+                    debugPrint(state.toString());
+                    if (state is InitialNotesState) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (state is GetAllNotesState) {
+                      notesList = state.list;
+
+                      myListView = ListOrGridView()
+                          .homePageListView(height, width, notesList);
+
+                      myGridView = ListOrGridView().homePageGridView(notesList);
+
+                      return gridOrlist ? myListView : myGridView;
+                    } else {
+                      return const Center(
+                        child: Text(
+                          'Data Note Found',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
             ],
           ),
@@ -145,8 +177,7 @@ class _HomePageState extends State<HomePage> {
     return TweenAnimationBuilder<Offset>(
       curve: Curves.fastOutSlowIn,
       duration: const Duration(seconds: 3),
-      tween:
-      Tween<Offset>(begin:  Offset(width, height-500), end: const Offset(0, 0)),
+      tween: Tween<Offset>(begin: Offset(0, -height), end: const Offset(0, 0)),
       builder: (context, offset, child) {
         return Transform.translate(
           offset: offset,
@@ -160,6 +191,4 @@ class _HomePageState extends State<HomePage> {
           }),
     );
   }
-
- 
 }

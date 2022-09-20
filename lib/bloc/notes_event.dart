@@ -3,10 +3,7 @@ part of 'notes_bloc.dart';
 @immutable
 abstract class NotesEvent {}
 
-class CreateNoteEvent extends NotesEvent {
-  Notes note;
-  CreateNoteEvent({required this.note});
-}
+class GetAllNotesEvent extends NotesEvent {}
 
 class DeleteNoteEvent extends NotesEvent {}
 
