@@ -2,10 +2,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:note_version_2/components/my_action_btn.dart';
-import 'package:note_version_2/screen/create_note.dart';
+import 'package:note_version_2/utils/routeconst.dart';
 
 import '../components/list_grid_homepage.dart';
+import '../models/notes_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   bool gridOrlist = true;
   late Widget myListView;
   late Widget myGridView;
+  late List<Notes> notesList;
 
   @override
   Widget build(BuildContext context) {
@@ -32,23 +35,25 @@ class _HomePageState extends State<HomePage> {
     width = size.width;
     myListView = ListOrGridView().homePageListView(height, width);
     myGridView = ListOrGridView().homePageGridView();
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(flex: 1, child: firstRow()),
-            Expanded(flex: 1, child: secondRow()),
-            Expanded(
-              flex: 10,
-              child: gridOrlist ? myListView : myGridView,
-            ),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(flex: 1, child: firstRow()),
+              Expanded(flex: 1, child: secondRow()),
+              Expanded(
+                flex: 10,
+                child: gridOrlist ? myListView : myGridView,
+              ),
+            ],
+          ),
         ),
+        floatingActionButton: buildFAB(),
       ),
-      floatingActionButton: buildFAB(),
     );
   }
 
@@ -60,7 +65,9 @@ class _HomePageState extends State<HomePage> {
         Expanded(
           child: Text(
             'Notes Keeper',
-            style: myTextStyle(),
+            style: GoogleFonts.alata(
+                color: Colors.white,
+                textStyle: TextStyle(fontSize: height * 0.03)),
           ),
         ),
         Expanded(
@@ -74,7 +81,9 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                   )),
               MyActionButton(
-                  onTap: _editAcitonCallBack,
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteConst.createNote);
+                  },
                   icon: const Icon(
                     Icons.edit,
                     color: Colors.white,
@@ -94,7 +103,10 @@ class _HomePageState extends State<HomePage> {
         Expanded(
           child: Text(
             'My Notes',
-            style: TextStyle(color: Colors.white, fontSize: height * 0.02),
+            style: GoogleFonts.adamina(
+                color: Colors.white,
+                fontSize: height * 0.02,
+                decoration: TextDecoration.underline),
           ),
         ),
         Expanded(
@@ -130,23 +142,24 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildFAB() {
-    return FloatingActionButton(child: const Icon(Icons.add), onPressed: () {});
-  }
-
-  TextStyle myTextStyle() {
-    return TextStyle(
-      fontSize: height * 0.03,
-      color: Colors.white,
+    return TweenAnimationBuilder<Offset>(
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(seconds: 3),
+      tween:
+      Tween<Offset>(begin:  Offset(width, height-500), end: const Offset(0, 0)),
+      builder: (context, offset, child) {
+        return Transform.translate(
+          offset: offset,
+          child: child,
+        );
+      },
+      child: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.pushNamed(context, RouteConst.createNote);
+          }),
     );
   }
 
-  VoidCallback _editAcitonCallBack() {
-    return () async {
-      await Navigator.push(context, MaterialPageRoute(
-        builder: (context) {
-          return CreateNote();
-        },
-      ));
-    };
-  }
+ 
 }

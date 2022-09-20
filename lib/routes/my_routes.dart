@@ -15,7 +15,7 @@ class MyRoutes {
           return const HomePage();
         },
       );
-    } else if (settings.name == RouteConst.creteNote) {
+    } else if (settings.name == RouteConst.createNote) {
       return MaterialPageRoute(
         builder: (context) {
           return CreateNote();
@@ -24,7 +24,7 @@ class MyRoutes {
     } else if (settings.name == RouteConst.updateNote) {
       return MaterialPageRoute(
         builder: (context) {
-          return const UpdateNote();
+          return UpdateNote();
         },
       );
     } else if (settings.name == RouteConst.searchNote) {

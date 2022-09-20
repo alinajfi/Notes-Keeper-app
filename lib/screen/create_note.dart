@@ -1,83 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:note_version_2/bloc/notes_bloc.dart';
+import 'package:note_version_2/components/my_action_btn.dart';
+import 'package:note_version_2/components/my_text_feilds.dart';
 
-import '../models/notes_model.dart';
+class CreateNote extends StatefulWidget {
+  const CreateNote({Key? key}) : super(key: key);
 
-class CreateNote extends StatelessWidget {
-  CreateNote({Key? key}) : super(key: key);
+  @override
+  State<CreateNote> createState() => _CreateNoteState();
+}
 
+class _CreateNoteState extends State<CreateNote> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _bodyController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var height = size.height;
     var width = size.width;
-    return Scaffold(
-      body: Column(
-        children: [
-          updateNoteFirstRow(height, width, context),
-          editTextFeilds(height, width),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child: Column(
+            children: [
+              Expanded(
+                  flex: 1, child: createNoteFirstRow(height, width, context)),
+              SizedBox(
+                height: height * 0.04,
+              ),
+              Expanded(flex: 8, child: editTextFeilds(height, width)),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget updateNoteFirstRow(double height, double width, BuildContext context) {
+  Widget createNoteFirstRow(double height, double width, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        InkWell(
-          // onTap: () => Navigator.pop(context),
-          child: Container(
-            alignment: Alignment.center,
-            width: width * 0.1,
-            height: height * 0.04,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(7),
-              border: Border.all(
-                color: const Color.fromARGB(255, 148, 132, 132),
-                width: 3,
-              ),
+        MyActionButton(icon: const Icon(Icons.arrow_back), onTap: () {}),
+        MyActionButton(
+            icon: const Text(
+              'save',
+              style: TextStyle(color: Colors.black),
             ),
-            child: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-              size: height * 0.03,
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: () {
-            context.read<NotesBloc>().add(CreateNoteEvent(
-                  note: Notes(
-                    title: _titleController.text,
-                    body: _bodyController.text,
-                  ),
-                ));
-          },
-          child: Container(
-            alignment: Alignment.center,
-            width: width * 0.13,
-            height: height * 0.04,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(7),
-              border: Border.all(
-                color: const Color.fromARGB(255, 148, 132, 132),
-                width: 3,
-              ),
-            ),
-            child: Text(
-              'Save',
-              style: TextStyle(
-                  fontSize: height * 0.02, color: Colors.grey.shade400),
-            ),
-          ),
-        ),
+            onTap: () {}),
       ],
     );
   }
@@ -86,50 +65,35 @@ class CreateNote extends StatelessWidget {
     return SizedBox(
       height: height,
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Flexible(
-            flex: 3,
-            child: TextFormField(
-              //initialValue: _intialValueForTitle(),
+          Expanded(
+            flex: 1,
+            child: MyTextFeild(
+              boxConstraints: BoxConstraints(
+                  maxHeight: height * 0.05, maxWidth: width * 0.9),
               controller: _titleController,
-              autofocus: true,
-              cursorColor: Colors.yellow,
-              style: const TextStyle(color: Colors.white),
-              maxLines: 3,
-              minLines: 1,
+              hintText: 'Enter Title here',
               maxLength: 80,
-              decoration: InputDecoration(
-                hintText: 'Enter title here',
-                hintStyle: const TextStyle(color: Colors.grey),
-                constraints: BoxConstraints(
-                    maxHeight: height * 0.07, maxWidth: width * 0.9),
-                counterStyle: const TextStyle(color: Colors.white),
-              ),
+              maxLines: 2,
+              minLines: 1,
+              counterStyle: const TextStyle(color: Colors.white),
+              hintStyle: const TextStyle(color: Colors.grey),
             ),
           ),
-          // Divider(
-          //   color: Colors.grey,
-          //   thickness: height * 0.002,
-          // ),
+          Divider(
+            color: Colors.grey,
+            thickness: height * 0.002,
+          ),
           Expanded(
-            child: TextFormField(
-              // initialValue: _intialValue(),
-              controller: _bodyController,
-              autofocus: true,
-              cursorColor: Colors.yellow,
-              style: const TextStyle(color: Colors.white),
-              minLines: 1,
-              maxLines: 5,
-              decoration: InputDecoration(
+            flex: 7,
+            child: MyTextFeild(
+                controller: _bodyController,
+                maxLines: 60,
+                minLines: 1,
                 hintText: 'Enter Your Note',
-                hintStyle: const TextStyle(
-                  color: Colors.grey,
-                ),
-                constraints: BoxConstraints(
-                    maxHeight: height * 0.07, maxWidth: width * 0.9),
-              ),
-            ),
+                boxConstraints: BoxConstraints(
+                    maxHeight: height * 0.09, maxWidth: width * 0.9),
+                hintStyle: const TextStyle(color: Colors.grey)),
           ),
         ],
       ),

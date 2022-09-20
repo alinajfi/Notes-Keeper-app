@@ -4,7 +4,7 @@ class MyActionButton extends StatelessWidget {
   const MyActionButton({Key? key, required this.icon, required this.onTap})
       : super(key: key);
 
-  final Icon icon;
+  final Widget icon;
   final VoidCallback onTap;
 
   @override
@@ -25,7 +25,7 @@ class MyActionButton extends StatelessWidget {
           height: height * 0.04,
           width: width * 0.09,
           decoration: BoxDecoration(
-            color: Colors.grey,
+            color: Colors.white.withOpacity(0.5),
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.circular(8),
           ),
