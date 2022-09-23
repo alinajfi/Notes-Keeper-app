@@ -18,13 +18,13 @@ class MyRoutes {
     } else if (settings.name == RouteConst.createNote) {
       return MaterialPageRoute(
         builder: (context) {
-          return CreateNote();
+          return const CreateNote();
         },
       );
     } else if (settings.name == RouteConst.updateNote) {
       return MaterialPageRoute(
         builder: (context) {
-          return UpdateNote();
+          return const UpdateNote();
         },
       );
     } else if (settings.name == RouteConst.searchNote) {
@@ -33,11 +33,17 @@ class MyRoutes {
           return const SearchNote();
         },
       );
-    } else {
+    } else if (settings.name == RouteConst.viewNote) {
+      print(settings.toString());
       return MaterialPageRoute(
         builder: (context) {
           return const ViewNote();
         },
+        settings: settings,
+      );
+    } else {
+      return MaterialPageRoute(
+        builder: (context) => const HomePage(),
       );
     }
   }

@@ -29,10 +29,12 @@ class _HomePageState extends State<HomePage> {
   late Widget myListView;
   late Widget myGridView;
   late List<Notes> notesList;
+  late ListOrGridView listOrGrid;
 
   @override
   void initState() {
     super.initState();
+    listOrGrid = ListOrGridView();
     context.read<NotesBloc>().add(GetAllNotesEvent());
   }
 
@@ -54,32 +56,7 @@ class _HomePageState extends State<HomePage> {
               Expanded(flex: 1, child: secondRow()),
               Expanded(
                 flex: 10,
-                child: BlocBuilder<NotesBloc, NotesState>(
-                  builder: (context, state) {
-                    debugPrint(state.toString());
-                    if (state is InitialNotesState) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (state is GetAllNotesState) {
-                      notesList = state.list;
-
-                      myListView = ListOrGridView()
-                          .homePageListView(height, width, notesList);
-
-                      myGridView = ListOrGridView().homePageGridView(notesList);
-
-                      return gridOrlist ? myListView : myGridView;
-                    } else {
-                      return const Center(
-                        child: Text(
-                          'Data Note Found',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      );
-                    }
-                  },
-                ),
+                child: blocBuilder(),
               ),
             ],
           ),
@@ -107,14 +84,24 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               MyActionButton(
-                  onTap: () {},
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteConst.searchNote);
+                  }),
+              MyActionButton(
+                  onTap: () async {
+                    await deleteAllNotesDialog();
+                  },
                   icon: const Icon(
                     Icons.delete_outline,
                     color: Colors.white,
                   )),
               MyActionButton(
                   onTap: () {
-                    Navigator.pushNamed(context, RouteConst.createNote);
+                    Navigator.pushNamed(context, RouteConst.updateNote);
                   },
                   icon: const Icon(
                     Icons.edit,
@@ -173,11 +160,72 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget blocBuilder() {
+    return BlocBuilder<NotesBloc, NotesState>(
+      builder: (context, state) {
+        debugPrint(state.toString());
+        if (state is InitialNotesState) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is GetAllNotesState) {
+          notesList = state.list;
+
+          myListView =
+              listOrGrid.homePageListView(height, width, notesList, context);
+          myGridView =
+              listOrGrid.homePageGridView(notesList, height, width, context);
+
+          return gridOrlist ? myListView : myGridView;
+        } else if (state is CreateNotesState) {
+          notesList = state.list;
+
+          myListView =
+              listOrGrid.homePageListView(height, width, notesList, context);
+          myGridView =
+              listOrGrid.homePageGridView(notesList, height, width, context);
+          return gridOrlist ? myListView : myGridView;
+        } else if (state is UpdateNoteState) {
+          notesList = state.list;
+          myListView =
+              listOrGrid.homePageListView(height, width, notesList, context);
+          myGridView =
+              listOrGrid.homePageGridView(notesList, height, width, context);
+          return gridOrlist ? myListView : myGridView;
+        } else if (state is DeleteNoteState) {
+          notesList = state.list;
+          myListView =
+              listOrGrid.homePageListView(height, width, notesList, context);
+          myGridView =
+              listOrGrid.homePageGridView(notesList, height, width, context);
+          return gridOrlist ? myListView : myGridView;
+        } else if (state is DeleteAllNoteState) {
+          notesList = [];
+
+          return Center(
+              child: SizedBox(
+            height: height * 0.7,
+            width: width * 0.8,
+            child: Image.asset(
+              r'assets/images/documents.png',
+              //  color: Colors.blue.withOpacity(0.3),
+            ),
+          ));
+        } else {
+          return Center(
+              child: Text('Somthing went Wrong',
+                  style: GoogleFonts.aladin(color: Colors.white)));
+        }
+      },
+    );
+  }
+
   Widget buildFAB() {
     return TweenAnimationBuilder<Offset>(
-      curve: Curves.fastOutSlowIn,
+      curve: Curves.bounceInOut,
       duration: const Duration(seconds: 3),
-      tween: Tween<Offset>(begin: Offset(0, -height), end: const Offset(0, 0)),
+      tween:
+          Tween<Offset>(begin: Offset(0, -height * 2), end: const Offset(0, 0)),
       builder: (context, offset, child) {
         return Transform.translate(
           offset: offset,
@@ -185,10 +233,47 @@ class _HomePageState extends State<HomePage> {
         );
       },
       child: FloatingActionButton(
+          elevation: 10,
+          backgroundColor:
+              Colors.primaries[random.nextInt(Colors.primaries.length)],
           child: const Icon(Icons.add),
           onPressed: () {
             Navigator.pushNamed(context, RouteConst.createNote);
           }),
+    );
+  }
+
+  deleteAllNotesDialog() async {
+    return await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          elevation: 5,
+          title: Text(
+            'Delete',
+            style: GoogleFonts.abel(fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.grey.withOpacity(0.6),
+          content: Text(
+            '''Are you sure you want delete
+all notes?''',
+            style: GoogleFonts.adamina(),
+          ),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('No')),
+            ElevatedButton(
+                onPressed: () {
+                  context.read<NotesBloc>().add(DeleteAllNoteEvent());
+                  Navigator.pop(context);
+                },
+                child: const Text('yes')),
+          ],
+        );
+      },
     );
   }
 }

@@ -63,7 +63,7 @@ class NotesDbHelper {
   }
 
 //delete Note
-  Future<bool> deleteNote(int noteId) async {
+  Future<bool> deleteNote(int? noteId) async {
     Database db = await _getDataBase();
 
     int changes = await db.delete(

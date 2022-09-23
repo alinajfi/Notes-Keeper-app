@@ -32,12 +32,12 @@ class _UpdateNoteState extends State<UpdateNote> {
         backgroundColor: Colors.black,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          child: Column(children: [
-            Expanded(flex: 1, child: updateNoteFirstRow()),
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Expanded(flex: 2, child: updateNoteFirstRow()),
             SizedBox(
               height: height * 0.01,
             ),
-            Expanded(flex: 7, child: editTextFeilds(height, width)),
+            Expanded(flex: 20, child: editTextFeilds(height, width)),
           ]),
         ),
       ),
@@ -48,7 +48,11 @@ class _UpdateNoteState extends State<UpdateNote> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        MyActionButton(icon: const Icon(Icons.arrow_back), onTap: () {}),
+        MyActionButton(
+            icon: const Icon(Icons.arrow_back),
+            onTap: () {
+              Navigator.pop(context);
+            }),
         MyActionButton(icon: const Text('Edit'), onTap: () {}),
       ],
     );
@@ -58,6 +62,7 @@ class _UpdateNoteState extends State<UpdateNote> {
     return SizedBox(
       height: height,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
             flex: 1,

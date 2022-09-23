@@ -33,6 +33,7 @@ class MyTextFeild extends StatelessWidget {
       maxLength: maxLength,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(5),
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,
         hintText: hintText,

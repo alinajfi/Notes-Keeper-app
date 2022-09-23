@@ -5,6 +5,7 @@ class Notes {
   String title;
   String body;
   int? id;
+
   Notes({
     required this.title,
     required this.body,

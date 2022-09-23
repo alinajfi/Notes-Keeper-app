@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_version_2/bloc/notes_bloc.dart';
 import 'package:note_version_2/components/my_action_btn.dart';
 import 'package:note_version_2/components/my_text_feilds.dart';
+import 'package:note_version_2/models/notes_model.dart';
+import 'package:note_version_2/repositry/repositry.dart';
 
 class CreateNote extends StatefulWidget {
   const CreateNote({Key? key}) : super(key: key);
@@ -12,6 +16,7 @@ class CreateNote extends StatefulWidget {
 class _CreateNoteState extends State<CreateNote> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
+  final NotesRepository repository = NotesRepository();
 
   @override
   void dispose() {
@@ -32,13 +37,14 @@ class _CreateNoteState extends State<CreateNote> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
-                  flex: 1, child: createNoteFirstRow(height, width, context)),
+                  flex: 2, child: createNoteFirstRow(height, width, context)),
               SizedBox(
                 height: height * 0.04,
               ),
-              Expanded(flex: 8, child: editTextFeilds(height, width)),
+              Expanded(flex: 20, child: editTextFeilds(height, width)),
             ],
           ),
         ),
@@ -50,13 +56,18 @@ class _CreateNoteState extends State<CreateNote> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        MyActionButton(icon: const Icon(Icons.arrow_back), onTap: () {}),
         MyActionButton(
-            icon: const Text(
-              'save',
-              style: TextStyle(color: Colors.black),
-            ),
-            onTap: () {}),
+            icon: const Icon(Icons.arrow_back),
+            onTap: () {
+              Navigator.pop(context);
+            }),
+        MyActionButton(
+          icon: const Text(
+            'save',
+            style: TextStyle(color: Colors.black),
+          ),
+          onTap: _onSave(),
+        ),
       ],
     );
   }
@@ -65,6 +76,7 @@ class _CreateNoteState extends State<CreateNote> {
     return SizedBox(
       height: height,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
             flex: 1,
@@ -98,5 +110,15 @@ class _CreateNoteState extends State<CreateNote> {
         ],
       ),
     );
+  }
+
+  VoidCallback _onSave() {
+    return () {
+      context.read<NotesBloc>().add(CreateNoteEvent(
+          note: Notes(
+              title: _titleController.text.toString(),
+              body: _bodyController.text.toString())));
+      Navigator.pop(context);
+    };
   }
 }

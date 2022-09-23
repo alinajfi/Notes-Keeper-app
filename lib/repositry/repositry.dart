@@ -8,6 +8,6 @@ class NotesRepository {
   Future<void> closeDataBase() => _notesDbHelper.closeDataBase();
   Future<bool> deleteAllNotes() => _notesDbHelper.deleteAllNotes();
   Future<bool> createNote(Notes note) => _notesDbHelper.insertIntoDb(note);
-  Future<bool> deletNote(int noteId) => _notesDbHelper.deleteNote(noteId);
+  Future<bool> deletNote(int? noteId) => _notesDbHelper.deleteNote(noteId);
   Future<bool> updateNote(Notes note) => _notesDbHelper.updateNote(note);
 }
