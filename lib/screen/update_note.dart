@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_version_2/bloc/notes_bloc.dart';
 import 'package:note_version_2/components/my_action_btn.dart';
 import 'package:note_version_2/components/my_text_feilds.dart';
+import 'package:note_version_2/models/notes_model.dart';
 
 class UpdateNote extends StatefulWidget {
   const UpdateNote({Key? key}) : super(key: key);
@@ -13,6 +16,13 @@ class _UpdateNoteState extends State<UpdateNote> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
 
+  late Notes note;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -23,6 +33,7 @@ class _UpdateNoteState extends State<UpdateNote> {
 
   @override
   Widget build(BuildContext context) {
+    note = ModalRoute.of(context)!.settings.arguments as Notes;
     var size = MediaQuery.of(context).size;
     var height = size.height;
     var width = size.width;
@@ -53,7 +64,13 @@ class _UpdateNoteState extends State<UpdateNote> {
             onTap: () {
               Navigator.pop(context);
             }),
-        MyActionButton(icon: const Text('Edit'), onTap: () {}),
+        MyActionButton(
+            icon: const Text('Update'),
+            onTap: () {
+              updateNote();
+              context.read<NotesBloc>().add(UpdateNoteEvent(note: note));
+              Navigator.pop(context);
+            }),
       ],
     );
   }
@@ -67,10 +84,12 @@ class _UpdateNoteState extends State<UpdateNote> {
           Expanded(
             flex: 1,
             child: MyTextFeild(
+              autofocus: false,
               boxConstraints: BoxConstraints(
                   maxHeight: height * 0.05, maxWidth: width * 0.9),
               controller: _titleController,
               hintText: 'Enter Title here',
+              // initialValue: note.title,
               maxLength: 80,
               maxLines: 2,
               minLines: 1,
@@ -85,7 +104,9 @@ class _UpdateNoteState extends State<UpdateNote> {
           Expanded(
             flex: 7,
             child: MyTextFeild(
+                autofocus: false,
                 controller: _bodyController,
+                //  initialValue: note.body,
                 maxLines: 60,
                 minLines: 1,
                 hintText: 'Enter Your Note',
@@ -96,5 +117,10 @@ class _UpdateNoteState extends State<UpdateNote> {
         ],
       ),
     );
+  }
+
+  void updateNote() {
+    note.title = _titleController.text.toString();
+    note.body = _titleController.text.toString();
   }
 }

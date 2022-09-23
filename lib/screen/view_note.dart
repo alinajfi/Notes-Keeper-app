@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:note_version_2/bloc/notes_bloc.dart';
 import 'package:note_version_2/components/my_action_btn.dart';
 import 'package:note_version_2/models/notes_model.dart';
+import 'package:note_version_2/utils/routeconst.dart';
 
 class ViewNote extends StatelessWidget {
   const ViewNote({Key? key}) : super(key: key);
@@ -39,9 +40,14 @@ class ViewNote extends StatelessWidget {
             }),
         Row(
           children: [
-            MyActionButton(icon: const Icon(Icons.edit), onTap: () {}),
+            MyActionButton(
+                icon: const Icon(Icons.edit),
+                onTap: () {
+                  Navigator.pushNamed(context, RouteConst.updateNote,
+                      arguments: note);
+                }),
             SizedBox(
-              width: size.width * 0.03,
+              width: size.width * 0.02,
             ),
             MyActionButton(
                 icon: const Icon(Icons.delete),

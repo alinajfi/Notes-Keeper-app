@@ -7,6 +7,8 @@ class MyTextFeild extends StatelessWidget {
     required this.maxLines,
     required this.minLines,
     required this.hintText,
+    required this.autofocus,
+    this.initialValue,
     this.maxLength,
     this.counterStyle,
     this.hintStyle,
@@ -21,16 +23,19 @@ class MyTextFeild extends StatelessWidget {
   final TextStyle? counterStyle;
   final TextStyle? hintStyle;
   final BoxConstraints boxConstraints;
+  final String? initialValue;
+  final bool autofocus;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      autofocus: true,
+      autofocus: autofocus,
       cursorColor: Colors.amber,
       controller: controller,
       minLines: minLines,
       maxLines: maxLines,
       maxLength: maxLength,
+      initialValue: initialValue,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(5),

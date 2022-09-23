@@ -92,19 +92,11 @@ class _HomePageState extends State<HomePage> {
                     Navigator.pushNamed(context, RouteConst.searchNote);
                   }),
               MyActionButton(
-                  onTap: () async {
-                    await deleteAllNotesDialog();
+                  onTap: () {
+                    deleteAllNotesDialog();
                   },
                   icon: const Icon(
                     Icons.delete_outline,
-                    color: Colors.white,
-                  )),
-              MyActionButton(
-                  onTap: () {
-                    Navigator.pushNamed(context, RouteConst.updateNote);
-                  },
-                  icon: const Icon(
-                    Icons.edit,
                     color: Colors.white,
                   )),
             ],
@@ -243,8 +235,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  deleteAllNotesDialog() async {
-    return await showDialog(
+  deleteAllNotesDialog() {
+    return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -255,7 +247,7 @@ class _HomePageState extends State<HomePage> {
           ),
           backgroundColor: Colors.grey.withOpacity(0.6),
           content: Text(
-            '''Are you sure you want delete
+            '''Are you sure you want to delete
 all notes?''',
             style: GoogleFonts.adamina(),
           ),

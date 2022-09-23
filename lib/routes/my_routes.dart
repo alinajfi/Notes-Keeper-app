@@ -17,24 +17,26 @@ class MyRoutes {
       );
     } else if (settings.name == RouteConst.createNote) {
       return MaterialPageRoute(
+        settings: settings,
         builder: (context) {
           return const CreateNote();
         },
       );
     } else if (settings.name == RouteConst.updateNote) {
       return MaterialPageRoute(
+        settings: settings,
         builder: (context) {
           return const UpdateNote();
         },
       );
     } else if (settings.name == RouteConst.searchNote) {
       return MaterialPageRoute(
+        settings: settings,
         builder: (context) {
           return const SearchNote();
         },
       );
     } else if (settings.name == RouteConst.viewNote) {
-      print(settings.toString());
       return MaterialPageRoute(
         builder: (context) {
           return const ViewNote();
@@ -43,6 +45,7 @@ class MyRoutes {
       );
     } else {
       return MaterialPageRoute(
+        settings: settings,
         builder: (context) => const HomePage(),
       );
     }

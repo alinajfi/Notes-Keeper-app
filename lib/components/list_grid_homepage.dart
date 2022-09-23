@@ -25,6 +25,9 @@ class ListOrGridView {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                 child: ListTile(
+                  onLongPress: () {
+                    deletNoteDialogue(list, index, context);
+                  },
                   onTap: () {
                     Notes note = list[index];
                     Navigator.pushNamed(context, RouteConst.viewNote,
@@ -65,9 +68,7 @@ class ListOrGridView {
               child: InkWell(
                 splashColor: Colors.white,
                 onLongPress: () {
-                  context
-                      .read<NotesBloc>()
-                      .add(DeleteNoteEvent(id: list[index].id));
+                  deletNoteDialogue(list, index, context);
                 },
                 onTap: () {
                   Notes note = list[index];
@@ -112,6 +113,42 @@ class ListOrGridView {
       color: Colors.primaries[random.nextInt(Colors.primaries.length)],
       borderRadius: BorderRadius.circular(10),
       // border: Border.all(width: 3, color: Colors.grey),
+    );
+  }
+
+  deletNoteDialogue(List<Notes> list, int index, BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          elevation: 5,
+          title: Text(
+            'Delete',
+            style: GoogleFonts.abel(fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.grey.withOpacity(0.6),
+          content: Text(
+            '''Are you sure you want to delete 
+this note?''',
+            style: GoogleFonts.adamina(),
+          ),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('No')),
+            ElevatedButton(
+                onPressed: () {
+                  context
+                      .read<NotesBloc>()
+                      .add(DeleteNoteEvent(id: list[index].id));
+                  Navigator.pop(context);
+                },
+                child: const Text('Yes')),
+          ],
+        );
+      },
     );
   }
 }

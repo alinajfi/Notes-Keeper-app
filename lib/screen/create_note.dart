@@ -81,6 +81,7 @@ class _CreateNoteState extends State<CreateNote> {
           Expanded(
             flex: 1,
             child: MyTextFeild(
+              autofocus: false,
               boxConstraints: BoxConstraints(
                   maxHeight: height * 0.05, maxWidth: width * 0.9),
               controller: _titleController,
@@ -99,6 +100,7 @@ class _CreateNoteState extends State<CreateNote> {
           Expanded(
             flex: 7,
             child: MyTextFeild(
+                autofocus: false,
                 controller: _bodyController,
                 maxLines: 60,
                 minLines: 1,
