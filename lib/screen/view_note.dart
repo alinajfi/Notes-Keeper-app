@@ -47,6 +47,7 @@ class ViewNote extends StatelessWidget {
                 icon: const Icon(Icons.delete),
                 onTap: () {
                   context.read<NotesBloc>().add(DeleteNoteEvent(id: note.id));
+
                   Navigator.pop(context);
                 })
           ],
