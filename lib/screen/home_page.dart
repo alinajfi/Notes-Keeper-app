@@ -245,7 +245,7 @@ class _HomePageState extends State<HomePage> {
             'Delete',
             style: GoogleFonts.abel(fontWeight: FontWeight.bold),
           ),
-          backgroundColor: Colors.grey.withOpacity(0.6),
+          backgroundColor: Colors.grey.withOpacity(0.9),
           content: Text(
             '''Are you sure you want to delete
 all notes?''',

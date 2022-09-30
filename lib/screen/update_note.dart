@@ -21,6 +21,8 @@ class _UpdateNoteState extends State<UpdateNote> {
   @override
   void initState() {
     super.initState();
+    _titleController.text = note.title;
+    _bodyController.text = note.body;
   }
 
   @override
@@ -106,7 +108,6 @@ class _UpdateNoteState extends State<UpdateNote> {
             child: MyTextFeild(
                 autofocus: false,
                 controller: _bodyController,
-                //  initialValue: note.body,
                 maxLines: 60,
                 minLines: 1,
                 hintText: 'Enter Your Note',

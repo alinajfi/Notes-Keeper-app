@@ -76,6 +76,7 @@ class ViewNote extends StatelessWidget {
             thickness: height * 0.002,
           ),
           Text(
+            maxLines: null,
             note.body,
             style: GoogleFonts.aladin(
                 color: Colors.white, fontSize: height * 0.04),
